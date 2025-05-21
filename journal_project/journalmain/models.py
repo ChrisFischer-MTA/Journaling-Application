@@ -8,37 +8,37 @@ class Blurbs(models.Model):
     journalEntry = models.ForeignKey('JournalEntry', on_delete=models.CASCADE, null=True, blank=True)
     blurb_text = models.CharField(max_length=256, blank=True, null=True)
 
+class Goal(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    goal_title = models.CharField(max_length=256, blank=False, null=False)
+    goal_text = models.CharField(max_length=1024, blank=False, null=False)
+    goal_rationale = models.CharField(max_length=1024, blank=False, null=False)
+    goalCreated = models.DateTimeField(auto_now=True)
+    journals = models.ManyToManyField('JournalEntry')
+    LENGTH_CHOICES = [
+        ('1m', '1 Month'),
+        ('6m', '6 Months'),
+        ('1y', '1 Year'),
+        ('5y', '5 Years'),
+    ]
+    length = models.CharField(
+        max_length=2,
+        choices=LENGTH_CHOICES,
+        default='1m',  # Set a default value if needed
+    )
 
 # Create your models here.
 class JournalEntry(models.Model):
     # The user who made the journal entry
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    # The date the journal entry was made
     date = models.DateField(auto_now_add=True)
-
-    # The title of the journal entry
     title = models.CharField(max_length=1024, blank=True, null=True)
-
-    # The content of the journal entry
     content = models.TextField(blank=True, null=True)
-
-    # The mood or emotions associated with the journal entry
     mood = models.CharField(max_length=50, blank=True, null=True)
-
-    # Any goals or tasks associated with the journal entry
     goals = models.TextField(blank=True, null=True)
-
-    # Any reflections or insights from the journal entry
     reflections = models.TextField(blank=True, null=True)
-
-    # Any gratitude or positive thoughts from the journal entry
     gratitude = models.TextField(blank=True, null=True)
-
-    # The time the journal entry was made
     created_at = models.DateTimeField(auto_now=True)
-
-    # The time the journal entry was last updated
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
