@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal Entries</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Journal Entries</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Date</th>
+                    <th>Title</th>
+                    <th>Mood</th>
+                    <th>Goals</th>
+                    <th>Reflections</th>
+                    <th>Gratitude</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in journal_entries %}
+                <tr>
+                    <td>{{ entry.user.username }}</td>
+                    <td>{{ entry.date }}</td>
+                    <td>{{ entry.title }}</td>
+                    <td>{{ entry.mood }}</td>
+                    <td>{{ entry.goals }}</td>
+                    <td>{{ entry.reflections }}</td>
+                    <td>{{ entry.gratitude }}</td>
+                    <td>{{ entry.created_at }}</td>
+                    <td>{{ entry.updated_at }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="9" class="text-center">No journal entries found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
