@@ -60,5 +60,4 @@ def journals(request):
 def journal_detail(request, id):
     entry = get_object_or_404(JournalEntry, id=id)
     mood = mood_list_creation(entry)
-    print(mood)
     return render(request, 'journal_detail.html', {'entry': entry, 'moods' : mood})
