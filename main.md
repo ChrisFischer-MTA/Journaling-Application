@@ -9,7 +9,32 @@ Goals Journal
 - Goals should include the goal itself and rationale
 
 Mood
-[...]
+moods = [
+    'happy',
+    'sad',
+    'angry',
+    'afraid',
+    'excited',
+    'calm',
+    'worried',
+    'in love',
+    'surprised',
+    'proud',
+    'ashamed',
+    'frustrated',
+    'guilty',
+    'curious',
+    'nostalgic',
+    'hopeful',
+    'disappointed',
+    'embarrassed',
+    'envious',
+    'grateful',
+    'longing',
+    'relieved',
+    'optimistic',
+    'pessimistic'
+]
 
 
 Ideas: 
@@ -23,5 +48,5 @@ Ideas:
 
 
 
-test credentials: testuser / testuser
+test credentials: joe / testuser
 

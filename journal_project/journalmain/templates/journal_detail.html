@@ -16,7 +16,10 @@
         <p>{{ entry.content | linebreaks}}</p>
 
         <h4>Mood</h4>
-        <p>{{ entry.mood }}</p>
+        {% for mooditem in moods %}
+          {{ mooditem | safe}}
+        {% endfor %}
+
 
         <h4>Reflections</h4>
         <p>{{ entry.reflections }}</p>

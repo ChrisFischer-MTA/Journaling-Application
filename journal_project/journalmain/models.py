@@ -34,7 +34,7 @@ class JournalEntry(models.Model):
     date = models.DateField(auto_now_add=True)
     title = models.CharField(max_length=1024, blank=True, null=True)
     content = models.TextField(blank=True, null=True)
-    mood = models.CharField(max_length=50, blank=True, null=True)
+    mood = models.CharField(max_length=128, blank=True, null=True)
     reflections = models.TextField(blank=True, null=True)
     gratitude = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now=True)
