@@ -1,0 +1,10 @@
+services:
+ django-web:
+   build: .
+   container_name: django-docker
+   ports:
+     - "8000:8000"
+#   depends_on:
+   environment:
+     SECRET_KEY: "test-test'key"
+     DEBUG: "True"
