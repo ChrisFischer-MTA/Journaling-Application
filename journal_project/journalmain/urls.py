@@ -4,4 +4,5 @@ from . import views
 urlpatterns = [
     path('journals/', views.journals, name='journals'),
     path('details/<int:id>/', views.journal_detail, name='journal_detail'),  
+    path('journals/create.html', views.journal_create, name='journal_create'),
 ]

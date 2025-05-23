@@ -46,6 +46,9 @@ Ideas:
 - Blurbs
 
 
+Authentication:
+  Plan is to use keycloak and Apache to toss the webapp behind SAML
+
 
 
 test credentials: joe / testuser

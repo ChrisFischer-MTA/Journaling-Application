@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from .models import JournalEntry
 import json
+from .forms import JournalForm
 # Create your views here.
 
 
@@ -61,3 +62,25 @@ def journal_detail(request, id):
     entry = get_object_or_404(JournalEntry, id=id)
     mood = mood_list_creation(entry)
     return render(request, 'journal_detail.html', {'entry': entry, 'moods' : mood})
+
+def journal_create(request):
+    if request.method == "POST":
+        # create a form instance and populate it with data from the request:
+        form = JournalForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            print(form.cleaned_data)
+            new = JournalEntry()
+            new.content = form.cleaned_data['content']
+            if len(form.cleaned_data['reflections']) > 5:
+                new.reflections = form.cleaned_data['reflections']
+            if len(form.cleaned_data['gratitude']) > 5:
+                new.gratitude = form.cleaned_data['gratitude']
+            new.user =  request.user # This WILL error when not logged in, but, that's fine
+            new.save()
+            # redirect to a new URL:
+            return HttpResponseRedirect("/journals/")    
+    else:
+        form = JournalForm()
+    return render(request, 'journal_submit.html', {'form':form})
