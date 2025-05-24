@@ -6,13 +6,19 @@ import json
 import sys
 import os
 import time
+
 def process_blurb(incoming_message):
+    # Get user object
+    user_object = User.objects.all().filter(username=f'{WEBAPP_USERNAME}')[0]
     print(incoming_message)
+    print(user_object)
+    temp = Blurb.objects.create(blurb_text=incoming_message)
+    temp.save()
 
 # First thing - let's grab the phone number
 # This is treated as a secret
 SIGNAL_NUMBER = os.environ.get("SIGNAL_NUMBER")
-
+WEBAPP_USERNAME = os.environ.get("WEBAPP_USERNAME")
 
 # This is some special syntatical suger that I learned a few years back.
 # We first add out list of django apps to our path. For this, we only really
@@ -26,6 +32,7 @@ get_wsgi_application()
 
 # Now, we import models
 from journalmain.models import Blurb
+from django.contrib.auth.models import User
 
 
 
@@ -35,6 +42,7 @@ headers = {
 
 # We double up on brackets to escape them for the curly braces
 data = f'{{"number": {SIGNAL_NUMBER}}}'
+process_blurb("scott is talking rn")
 
 #response = requests.get(f'http://signal-api:8080/v1/receive/{SIGNAL_NUMBER}', headers=headers, data=data)
 #for message in response.json():
@@ -42,3 +50,5 @@ data = f'{{"number": {SIGNAL_NUMBER}}}'
 #        if(message["envelope"].get("dataMessage") is not None):
 #            if(message["envelope"]["dataMessage"].get("message")) is not None:
 #                process_blurb(message["envelope"]["dataMessage"]["message"])
+
+

@@ -10,6 +10,7 @@ services:
     environment:
       SECRET_KEY: ${SECRET_KEY}
       SIGNAL_NUMBER: ${SIGNAL_NUMBER}
+      WEBAPP_USERNAME: ${WEBAPP_USERNAME}
       DEBUG: "True"
   signal-cli-rest-api:
     container_name: signal-api

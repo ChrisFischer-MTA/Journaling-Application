@@ -36,9 +36,9 @@ RUN echo '\n' >> /etc/cron.d/django-support-scripts
 RUN chmod 0644 /etc/cron.d/django-support-scripts
 
 
-
 RUN python manage.py makemigrations
 RUN python manage.py migrate
+RUN python create-test-data.py
 RUN cp db.sqlite3 db.sqlite3_initial
  
 # Run Django’s development server
