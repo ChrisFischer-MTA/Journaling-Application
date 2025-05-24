@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 # Blurbs are messages sent throughout the day when
 # things happen that remind you to journal about the topic.
-class Blurbs(models.Model):
+class Blurb(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     journalEntry = models.ForeignKey('JournalEntry', on_delete=models.CASCADE, null=True, blank=True)
     blurb_text = models.CharField(max_length=256, blank=True, null=True)
