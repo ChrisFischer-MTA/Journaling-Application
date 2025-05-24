@@ -42,13 +42,12 @@ headers = {
 
 # We double up on brackets to escape them for the curly braces
 data = f'{{"number": {SIGNAL_NUMBER}}}'
-process_blurb("scott is talking rn")
 
-#response = requests.get(f'http://signal-api:8080/v1/receive/{SIGNAL_NUMBER}', headers=headers, data=data)
-#for message in response.json():
-#    if(message.get("envelope") is not None):
-#        if(message["envelope"].get("dataMessage") is not None):
-#            if(message["envelope"]["dataMessage"].get("message")) is not None:
-#                process_blurb(message["envelope"]["dataMessage"]["message"])
+response = requests.get(f'http://signal-api:8080/v1/receive/{SIGNAL_NUMBER}', headers=headers, data=data)
+for message in response.json():
+    if(message.get("envelope") is not None):
+        if(message["envelope"].get("dataMessage") is not None):
+            if(message["envelope"]["dataMessage"].get("message")) is not None:
+                process_blurb(message["envelope"]["dataMessage"]["message"])
 
 
