@@ -8,7 +8,8 @@ services:
     volumes:
       - ./.data/db.sqlite3:/app/db.sqlite3
     environment:
-      SECRET_KEY: "test-test'key"
+      SECRET_KEY: ${SECRET_KEY}
+      SIGNAL_NUMBER: ${SIGNAL_NUMBER}
       DEBUG: "True"
   signal-cli-rest-api:
     container_name: signal-api
