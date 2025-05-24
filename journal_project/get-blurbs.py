@@ -12,7 +12,7 @@ def process_blurb(incoming_message):
     user_object = User.objects.all().filter(username=f'{WEBAPP_USERNAME}')[0]
     print(incoming_message)
     print(user_object)
-    temp = Blurb.objects.create(blurb_text=incoming_message)
+    temp = Blurb.objects.create(blurb_text=incoming_message, user=user_object)
     temp.save()
 
 # First thing - let's grab the phone number

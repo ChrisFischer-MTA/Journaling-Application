@@ -31,7 +31,7 @@ EXPOSE 8000
 # Journal App requires docker support
 RUN apt-get update
 RUN apt-get install cron curl -y 
-RUN echo "* * * * * root python3 /app/get-blurbs.py > /etc/cron.d/django-support-scripts
+RUN echo "* * * * * root python3 /app/get-blurbs.py" > /etc/cron.d/django-support-scripts
 RUN echo '\n' >> /etc/cron.d/django-support-scripts
 RUN chmod 0644 /etc/cron.d/django-support-scripts
 
