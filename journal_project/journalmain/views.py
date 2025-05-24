@@ -37,7 +37,6 @@ mood_colors = {
 def mood_list_creation(entry: JournalEntry):
     return_list = []
     if(entry.mood is None):
-        print('Journal is yet to be processed by AI')
         return ['<span class="badge badge-pill badge-light">Journal is yet to be processed by AI</span>']
     else:
         # We expect that entry.mood is a valid python array

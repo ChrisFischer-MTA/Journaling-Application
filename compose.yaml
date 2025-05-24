@@ -1,12 +1,22 @@
 services:
- django-web:
-   build: .
-   container_name: django-docker
-   ports:
-     - "8000:8000"
+  django-web:
+    build: .
+    container_name: django-docker
+    ports:
+      - "8000:8000"
 #   depends_on:
-   volumes:
-     - ./.data/db.sqlite3:/app/db.sqlite3
-   environment:
-     SECRET_KEY: "test-test'key"
-     DEBUG: "True"
+    volumes:
+      - ./.data/db.sqlite3:/app/db.sqlite3
+    environment:
+      SECRET_KEY: "test-test'key"
+      DEBUG: "True"
+  signal-cli-rest-api:
+    container_name: signal-api
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      - $HOME/.local/share/signal-api:/home/.local/share/signal-cli
+    environment:
+      - MODE=native
+    image: bbernhard/signal-cli-rest-api
