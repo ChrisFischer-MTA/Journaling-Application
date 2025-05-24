@@ -30,6 +30,7 @@ EXPOSE 8000
 
 RUN python manage.py makemigrations
 RUN python manage.py migrate
+RUN cp db.sqlite3 db.sqlite3_initial
  
 # Run Django’s development server
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

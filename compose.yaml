@@ -5,6 +5,8 @@ services:
    ports:
      - "8000:8000"
 #   depends_on:
+   volumes:
+     - ./.data/db.sqlite3:/app/db.sqlite3
    environment:
      SECRET_KEY: "test-test'key"
      DEBUG: "True"
