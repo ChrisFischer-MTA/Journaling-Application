@@ -43,6 +43,19 @@
 
 <div class="journal-container">
     <h2>Journal Entry</h2>
+    {% if blurbs %}
+        <div class="blurbs-container bg-light border p-3" style="background-color: #F5F5DC; margin-top: 20px;">
+            <h3>Recent Blurbs</h3>
+            <ul>
+                {% for blurb in blurbs %}
+                    <li>
+                        <small>{{ blurb.created_at }}</small>
+                        <p>{{ blurb.blurb_text }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
     <form method="POST" action="{% url 'journal_create' %}">
         {% csrf_token %}
         <div class="form-group">
@@ -50,8 +63,8 @@
             <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
         </div>
         <div class="form-group">
-            <label for="mood">How does that make you feel and what could you have done different?</label>
-            <textarea class="form-control" id="mood" name="mood" rows="10"></textarea>
+            <label for="reflections">How does that make you feel and what could you have done different?</label>
+            <textarea class="form-control" id="reflections" name="reflections" rows="10"></textarea>
         </div>
         <div class="form-group">
             <label for="gratitude">What's something you're grateful for, today?</label>
@@ -60,9 +73,9 @@
         <button type="submit" class="btn btn-primary submit-btn">Submit</button>
         <p></p>
         <a href="{% url 'journals' %}" class="btn btn-secondary submit-btn">Return to index</a>
-
     </form>
 </div>
+
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

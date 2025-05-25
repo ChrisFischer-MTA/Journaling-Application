@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import JournalEntry
+from .models import JournalEntry, Blurb
 import json
 from .forms import JournalForm
 # Create your views here.
@@ -71,6 +71,7 @@ def journal_create(request):
             # process the data in form.cleaned_data as required
             print(form.cleaned_data)
             new = JournalEntry()
+            print(form.errors)
             new.content = form.cleaned_data['content']
             if len(form.cleaned_data['reflections']) > 5:
                 new.reflections = form.cleaned_data['reflections']
@@ -78,8 +79,16 @@ def journal_create(request):
                 new.gratitude = form.cleaned_data['gratitude']
             new.user =  request.user # This WILL error when not logged in, but, that's fine
             new.save()
+            # Let's mark the blurbs as spent now
+            # Note this has a known issue - if the blurb was sent after the user started journaling
+            # but before it was submitted, it would be marked as spent. This is not a big deal.
+            for blurb in Blurb.objects.filter(user=request.user, journalEntry=None):
+                blurb.journalEntry = new
+                blurb.save()
             # redirect to a new URL:
             return HttpResponseRedirect("/journals/")    
+        return render(request, 'journal_submit.html', {'form':form})
     else:
         form = JournalForm()
-    return render(request, 'journal_submit.html', {'form':form})
+        blurbs = list(Blurb.objects.filter(user=request.user, journalEntry=None))
+        return render(request, 'journal_submit.html', {'form':form, 'blurbs' : blurbs})
