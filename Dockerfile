@@ -25,7 +25,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Journal App requires cron support. Instlal cron and create cron script.
 RUN apt-get update
 RUN apt-get install cron curl -y 
-RUN echo "* * * * * root /usr/local/bin/python /app/get-blurbs.py\n" > /etc/cron.d/django-support-scripts
+RUN echo "* * * * */5 root /usr/local/bin/python /app/get-blurbs.py\n" > /etc/cron.d/django-support-scripts
 RUN echo '\n' >> /etc/cron.d/django-support-scripts
 RUN chmod 0644 /etc/cron.d/django-support-scripts
 
