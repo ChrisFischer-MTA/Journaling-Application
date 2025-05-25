@@ -7,6 +7,9 @@ class Blurb(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     journalEntry = models.ForeignKey('JournalEntry', on_delete=models.CASCADE, null=True, blank=True)
     blurb_text = models.CharField(max_length=256)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
 
 class Goal(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

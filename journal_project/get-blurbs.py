@@ -18,7 +18,21 @@ def process_blurb(incoming_message):
 # First thing - let's grab the phone number
 # This is treated as a secret
 SIGNAL_NUMBER = os.environ.get("SIGNAL_NUMBER")
+
+# There is an edge case where we execute this script via cron and it doesn't load enviroment variables
+# So, as a result, we have to account for that.
+# Google says I could use the dotenv library, but, easy enough to just load it by hand
+if SIGNAL_NUMBER is None:
+    with open('/etc/enviroment', 'r') as ifp:
+        lines = ifp.read().splitlines()
+        for line in lines:
+            os.environ[line.split('=')[0]] = line.split('=')[1]
+
+# Now that we know our enviroment variables are set, let's load in whatever else we need.
+SIGNAL_NUMBER = os.environ.get("SIGNAL_NUMBER")
 WEBAPP_USERNAME = os.environ.get("WEBAPP_USERNAME")
+
+
 
 # This is some special syntatical suger that I learned a few years back.
 # We first add out list of django apps to our path. For this, we only really

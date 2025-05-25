@@ -21,26 +21,34 @@ COPY requirements.txt  /app/
  
 # run this command to install all dependencies 
 RUN pip install --no-cache-dir -r requirements.txt
- 
+
+# Journal App requires cron support. Instlal cron and create cron script.
+RUN apt-get update
+RUN apt-get install cron curl -y 
+RUN echo "* * * * * root /usr/local/bin/python /app/get-blurbs.py\n" > /etc/cron.d/django-support-scripts
+RUN echo '\n' >> /etc/cron.d/django-support-scripts
+RUN chmod 0644 /etc/cron.d/django-support-scripts
+
 # Copy the Django project to the container
 COPY ./journal_project/ /app/
  
 # Expose the Django port
 EXPOSE 8000
 
-# Journal App requires docker support
-RUN apt-get update
-RUN apt-get install cron curl -y 
-RUN echo "* * * * * root python /app/get-blurbs.py" > /etc/cron.d/django-support-scripts
-RUN echo '\n' >> /etc/cron.d/django-support-scripts
-RUN chmod 0644 /etc/cron.d/django-support-scripts
-
-
+# Create our initial database
 RUN python manage.py makemigrations
 RUN python manage.py migrate
 RUN python create-test-data.py
 RUN cp db.sqlite3 db.sqlite3_initial
- 
+
+# We can't use a simple command entry point, because cron can't inference env variables
+# My workaround for this is create a script, save a env file to root, then reference the variables
+# in our cron script
+RUN echo 'printenv >> /etc/enviroment' > /app/start.sh
+RUN echo 'cron && python manage.py runserver 0.0.0.0:8000' >> /app/start.sh
+RUN chmod +x /app/start.sh
+
 # Run Django’s development server
-CMD cron && python manage.py runserver 0.0.0.0:8000
+CMD /app/start.sh
+#cron && python manage.py runserver 0.0.0.0:8000
 #["python", "manage.py", "runserver", "0.0.0.0:8000"]
