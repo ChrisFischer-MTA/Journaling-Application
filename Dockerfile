@@ -43,10 +43,15 @@ RUN cp db.sqlite3 db.sqlite3_initial
 
 # We can't use a simple command entry point, because cron can't inference env variables
 # My workaround for this is create a script, save a env file to root, then reference the variables
-# in our cron script
+# in our cron script. 
 RUN echo 'printenv >> /etc/enviroment' > /app/start.sh
 RUN echo 'cron && python manage.py runserver 0.0.0.0:8000' >> /app/start.sh
 RUN chmod +x /app/start.sh
+
+# TODO: Working in a check to see if db.sqlite3 is a folder (docker by default will make this a folder if the file doesn't exist.
+# We take advantage of this logic by detecting it being a folder, then overwriting with our test database!
+# RUN echo 'if [ -d /app/db.sqlite3 ]; then rm -r /app/db.sqlite3; cp /app/db.sqlite3_initial db.sqlite3; fi'
+
 
 # Run Django’s development server
 CMD /app/start.sh
