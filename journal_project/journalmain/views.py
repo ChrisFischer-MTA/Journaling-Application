@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import JournalEntry, Blurb
+from .models import JournalEntry, Blurb, Report
 import json
 from .forms import JournalForm
 # Create your views here.
@@ -92,3 +92,7 @@ def journal_create(request):
         form = JournalForm()
         blurbs = list(Blurb.objects.filter(user=request.user, journalEntry=None))
         return render(request, 'journal_submit.html', {'form':form, 'blurbs' : blurbs})
+
+def report_detail(request, id):
+    report_entry = get_object_or_404(Report, id=id, user=request.user)
+    return render(request, 'report_detail.html', {'report_entry' : report_entry})

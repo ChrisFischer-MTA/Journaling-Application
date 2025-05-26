@@ -34,6 +34,7 @@ class Report(models.Model):
     # The user field exists so we know who "owns" the report, and
     # from that we can determine who can view it
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=1024)
     TYPE_CHOICES = [
         ('w', '1 Week'),
         ('m', '1 Month'),
@@ -46,6 +47,10 @@ class Report(models.Model):
         default='w',  # Set a default value if needed
     )
     content = models.TextField()
+
+    def __str__(self):
+        return self.title
+
 
 # Create your models here.
 class JournalEntry(models.Model):

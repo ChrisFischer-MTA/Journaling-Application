@@ -51,9 +51,10 @@ for key in to_process:
     # Create a text blob to store the journals
     blob = ""
     for i in range(len(journals)):
+        last_journal_date = journals[i].date.isocalendar()[0:2]
         blob += f"\nJournal {i}:\n```\n{journals[i].content}\n```"
     response = requests.post('http://ollama-intel-gpu:11434/api/generate', json={'model':'deepseek-r1:14b','stream':False,'prompt':summary_prompt+f'```\n{blob}\n```'})
-    report_obj = Report(user=journals[0].user, type='w', content=response.json()['response'].split('</think>')[1].strip())
+    report_obj = Report(user=journals[0].user, type='w', title=f'Week {str(last_journal_date)} Journal Report', content=response.json()['response'].split('</think>')[1].strip())
     report_obj.save()
     for entry in journals:
         entry.week_report = report_obj
