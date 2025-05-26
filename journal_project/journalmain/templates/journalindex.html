@@ -10,7 +10,7 @@
 <body>
     <div class="container mt-5">
         <h1 class="mb-4">Journal Entries</h1>
-    <a href="{% url 'journal_create' %}" class="btn btn-primary">Create New Journal!</a>
+        <a href="{% url 'journal_create' %}" class="btn btn-primary">Create New Journal!</a>
 
         <table class="table table-striped">
             <thead>
@@ -19,12 +19,10 @@
                     <th>Date</th>
                     <th>Title</th>
                     <th>Mood</th>
-<!--                    <th>Goals</th> 
-                    <th>Reflections</th>
-                    <th>Gratitude</th>-->
                     <th>Created At</th>
                     <th>Updated At</th>
                     <th>Action</th>
+                    <th>Report</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,18 +32,22 @@
                     <td>{{ entry.date }}</td>
                     <td>{{ entry.title }}</td>
                     <td>{{ entry.mood }}</td>
-<!--                    <td>{{ entry.goals }}</td>
-                    <td>{{ entry.reflections }}</td>
-                    <td>{{ entry.gratitude }}</td>-->
                     <td>{{ entry.created_at }}</td>
                     <td>{{ entry.updated_at }}</td>
                     <td>
                         <a href="{% url 'journal_detail' entry.id %}" class="btn btn-primary">View</a>
                     </td>
+                    <td>
+                        {% if entry.week_report %}
+                            <a href="{% url 'report_detail' entry.week_report.id %}" class="btn btn-primary">View</a>
+                        {% else %}
+                            Pending
+                        {% endif %}
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="10" class="text-center">No journal entries found.</td>
+                    <td colspan="8" class="text-center">No journal entries found.</td>
                 </tr>
                 {% endfor %}
             </tbody>
