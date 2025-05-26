@@ -54,11 +54,11 @@ def mood_list_creation(entry: JournalEntry):
     return return_list
 
 def journals(request):
-    journal_entries = JournalEntry.objects.all()
+    journal_entries = JournalEntry.objects.filter(user=request.user)
     return render(request, 'journalindex.html', {'journal_entries': journal_entries}) #HttpResponse("Hello world!")
 
 def journal_detail(request, id):
-    entry = get_object_or_404(JournalEntry, id=id)
+    entry = get_object_or_404(JournalEntry, id=id, user=request.user)
     mood = mood_list_creation(entry)
     return render(request, 'journal_detail.html', {'entry': entry, 'moods' : mood})
 
