@@ -1,6 +1,6 @@
-# Weekend Project
+# Weekend Project - Example Journaling App
 ## Introduction
-This is a custom journaling app that I wrote in the span of a weekend. I did some basic scaffolding before my four-day Memorial Weekend, but the bulk of the work was done Friday and Saturday (with light commits Sunday and Monday during testing). 
+This is a custom journaling app that I wrote in the span of a weekend. I did some basic scaffolding before my four-day Memorial Weekend, but the bulk of the work was done Friday and Saturday (with light commits Sunday and Monday during testing). This app was primarily written just to keep my python/django skills sharp while I'm not using them in my professional life - not neccessarily for the app's usefulness itself.
 
 This app is trying to solve the following problems:
 * Journals should always be private, and never sent off the computer this project runs on.
@@ -17,10 +17,21 @@ When I'm ready for the next iteration of this project, I'm hoping to incorporate
 ## Current Features
 Right now, the journal app does a few things:
 * You can create a journal
+![image](https://github.com/user-attachments/assets/a7c55860-12fe-4b95-9d73-4abe3de6456a)
 * You can view past journals
+![image](https://github.com/user-attachments/assets/a003e875-8607-4979-aa9a-3dba8035c439)
+_Note: These journals are example journals I had AI write with the prompt about being a drone operator in a bureaucratic organization._
+
 * It has a Signal integration, meaning you can message the app things to journal about throughout the day and it'll display the messages when you sent them ("blurbs!")
+![image](https://github.com/user-attachments/assets/4bcfda9b-b021-47f6-9cf5-b29a29dcbbe8)
+
 * It sends your journals to a local LLM and automatically titles them. Also does mood extraction.
+![image](https://github.com/user-attachments/assets/1125ad32-75e8-4ef6-ad44-16faed0e2844)
+_Note: The Title and Mood tags are completely AI generated_
+
 * Weekly Summaries - At the end of every week, AI reviews your journal and provides you a weekly summary.
+![image](https://github.com/user-attachments/assets/6ddf8922-3c92-4f9c-b7ab-b71ac51638fa)
+
 
 ## Installation and Usage Instructions
 ### Getting the Ollama API running
