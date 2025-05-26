@@ -19,7 +19,8 @@ Right now, the journal app does a few things:
 * You can create a journal
 * You can view past journals
 * It has a Signal integration, meaning you can message the app things to journal about throughout the day and it'll display the messages when you sent them ("blurbs!")
-* It sends your journals to a local LLM and automatically titles them
+* It sends your journals to a local LLM and automatically titles them. Also does mood extraction.
+* Weekly Summaries - At the end of every week, AI reviews your journal and provides you a weekly summary.
 
 ## Installation and Usage Instructions
 ### Getting the Ollama API running

@@ -11,7 +11,7 @@ services:
       SECRET_KEY: ${SECRET_KEY}
       SIGNAL_NUMBER: ${SIGNAL_NUMBER}
       WEBAPP_USERNAME: ${WEBAPP_USERNAME}
-      DEBUG: "True"
+      DEBUG: ${DJANGO_DEBUG}
   signal-cli-rest-api:
     container_name: signal-api
     restart: always
