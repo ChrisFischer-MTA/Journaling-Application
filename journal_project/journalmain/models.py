@@ -30,6 +30,23 @@ class Goal(models.Model):
         default='1m',  # Set a default value if needed
     )
 
+class Report(models.Model):
+    # The user field exists so we know who "owns" the report, and
+    # from that we can determine who can view it
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    TYPE_CHOICES = [
+        ('w', '1 Week'),
+        ('m', '1 Month'),
+        ('6', '6 Months'), # note that anything beyond this is not implemented yet
+        ('y', '1 Year'),   # and may not be implemented until I find a model that can fit it
+    ]
+    type = models.CharField(
+        max_length=1,
+        choices=TYPE_CHOICES,
+        default='w',  # Set a default value if needed
+    )
+    content = models.TextField()
+
 # Create your models here.
 class JournalEntry(models.Model):
     # The user who made the journal entry
