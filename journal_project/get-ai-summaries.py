@@ -10,12 +10,12 @@ def process_entry(entry, tries):
         print("Five tries exceeded!")
         return
     response = requests.post('http://ollama-intel-gpu:11434/api/generate', json={'model':'deepseek-r1:14b','stream':False,'prompt':mood_prompt+f'```\n{entry.content}\n```'})
-    if "python3" not in response.content:
+    if "python3" not in str(response.json()):
         return process_entry(entry, tries+1)
     moods = response.json()['response'].split('```')[1].replace('python3','').replace('\n','')
     entry.mood = moods
     response = requests.post('http://ollama-intel-gpu:11434/api/generate', json={'model':'deepseek-r1:14b','stream':False,'prompt':title_prompt+f'```\n{entry.content}\n```'})
-    entry.title = response.json()['response'].split('</think>')[1].strip().replace('*', '').replace('"','')
+    entry.title = response.json()['response'].split('</think>')[1].strip().replace('*', '').replace('"','').replace('Title:', '').replace('Title','').strip()
     entry.save()
 
 
