@@ -29,6 +29,7 @@ class Goal(models.Model):
         choices=LENGTH_CHOICES,
         default='1m',  # Set a default value if needed
     )
+    parent_goal = models.ForeignKey("self", on_delete=models.CASCADE)
 
 class Report(models.Model):
     # The user field exists so we know who "owns" the report, and

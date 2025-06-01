@@ -35,5 +35,3 @@ RUN cd / && \
 ENV OLLAMA_HOST=0.0.0.0:11434
 
 ENTRYPOINT ["/bin/bash", "/start-ollama.sh"]
-
-

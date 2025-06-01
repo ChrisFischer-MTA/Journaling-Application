@@ -7,6 +7,7 @@ services:
 #   depends_on:
     volumes:
       - ./.data/db.sqlite3:/app/db.sqlite3
+      - ./.data/migrations:/app/journalmain/migrations
     environment:
       SECRET_KEY: ${SECRET_KEY}
       SIGNAL_NUMBER: ${SIGNAL_NUMBER}
