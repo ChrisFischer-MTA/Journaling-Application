@@ -69,7 +69,9 @@ class JournalEntry(models.Model):
     month_report = models.ForeignKey(Report, on_delete=models.CASCADE, related_name='month_report', blank=True, null=True)
 
     def __str__(self):
-        return f"{self.user.username}'s Journal Entry for {self.date}"
-
+        if self.title is None:
+            return f"{self.user.username}'s Journal Entry for {self.date}"
+        else: 
+            return f"[{self.date}] - {self.title}"
     class Meta:
         verbose_name_plural = "Journal Entries"

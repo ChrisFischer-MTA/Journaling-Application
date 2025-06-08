@@ -2,7 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import JournalEntry, Blurb, Report
 import json
-from .forms import JournalForm
+from .forms import JournalForm, AskJournalForm
+import requests
 # Create your views here.
 
 
@@ -54,8 +55,29 @@ def mood_list_creation(entry: JournalEntry):
     return return_list
 
 def journals(request):
-    journal_entries = JournalEntry.objects.filter(user=request.user)
+    journal_entries = JournalEntry.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'journalindex.html', {'journal_entries': journal_entries}) #HttpResponse("Hello world!")
+
+def journal_question(request):
+    if request.method == "POST":
+        form = AskJournalForm(request.POST, user=request.user)
+        # This is a neat little trick, if we call it this way, it'll create it in memory but not persist to the database
+        if form.is_valid():
+            # Now, this is the step where we collate the question, journals, send to the AI, and display the response
+            # Step 1: Collate the question and journals.
+            prompt=f"You are an unbiased AI agent who has been given the task of answering a query from a user. The qeury from the user will require you to consider one or more journal entries, some of which will be relevant (important! not all journal entries may be relevant.) Your task is to answer the question of the user as best as you can while considering these journals. Where plausible, cite the journals in your answer if they are relevant.\n Format your response in markdown."
+            question=f"\nNow, consider the question from the user:\n```{form.cleaned_data['question']}```\n"
+            journal_preamble=f"Now, consider the following journal entries.\n"
+            for journal in form.cleaned_data['journals']:
+                journal_preamble+=f"Journal Entry:\nDate: {journal.date}\nContent:\n```{journal.content}```"
+            print(prompt+question+journal_preamble)
+            response = requests.post('http://ollama-intel-gpu:11434/api/generate', json={'model':'deepseek-r1:14b','stream':False,'prompt':prompt+question+journal_preamble})
+            return render(request, 'report_detail.html', {'report_entry' : Report(user=request.user, title='Temporary Question', type='w', content=response.json()['response'].split('</think>')[1].strip()) })
+        # This isn't nice, but, I see no better option. TODO to add some more verbose error reporting.
+        return HttpResponseRedirect("/journals/")    
+    else:
+        form = AskJournalForm(user=request.user)
+        return render(request, 'journal_ask.html', {'form': form})
 
 def journal_detail(request, id):
     entry = get_object_or_404(JournalEntry, id=id, user=request.user)
