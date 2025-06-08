@@ -19,7 +19,8 @@ Right now, the journal app does a few things:
 * You can create a journal
 ![image](https://github.com/user-attachments/assets/a7c55860-12fe-4b95-9d73-4abe3de6456a)
 * You can view past journals
-![image](https://github.com/user-attachments/assets/a003e875-8607-4979-aa9a-3dba8035c439)
+![image](https://github.com/user-attachments/assets/a03b01f2-51bb-497b-9b1e-db6083708c51)
+
 _Note: These journals are example journals I had AI write with the prompt about being a drone operator in a bureaucratic organization._
 
 * It has a Signal integration, meaning you can message the app things to journal about throughout the day and it'll display the messages when you sent them ("blurbs!")
@@ -31,6 +32,12 @@ _Note: The Title and Mood tags are completely AI generated_
 
 * Weekly Summaries - At the end of every week, AI reviews your journal and provides you a weekly summary.
 ![image](https://github.com/user-attachments/assets/6ddf8922-3c92-4f9c-b7ab-b71ac51638fa)
+
+* You can even ask your journals a question using AI.
+![image](https://github.com/user-attachments/assets/5d35288c-ffaf-4859-9447-5c80c5b73d8f)
+
+* And it will give you a response formatted from Markdown!
+![image](https://github.com/user-attachments/assets/27730138-17e4-4683-92a9-ac52eef60cef)
 
 
 ## Installation and Usage Instructions
