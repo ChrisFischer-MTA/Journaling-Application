@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import JournalEntry, Blurb, Report
+
+from .models import Blurb, JournalEntry, Report
 
 # Register your models here.
 admin.site.register(JournalEntry)

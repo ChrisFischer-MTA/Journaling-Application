@@ -1,11 +1,12 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+
 
 # Blurbs are messages sent throughout the day when
 # things happen that remind you to journal about the topic.
 class Blurb(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    journalEntry = models.ForeignKey('JournalEntry', on_delete=models.CASCADE, null=True, blank=True)
+    journal_entry = models.ForeignKey('JournalEntry', on_delete=models.CASCADE, null=True, blank=True)
     blurb_text = models.CharField(max_length=256)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -16,7 +17,7 @@ class Goal(models.Model):
     goal_title = models.CharField(max_length=256, blank=False, null=False)
     goal_text = models.CharField(max_length=1024, blank=False, null=False)
     goal_rationale = models.CharField(max_length=1024, blank=False, null=False)
-    goalCreated = models.DateTimeField(auto_now=True)
+    goal_created = models.DateTimeField(auto_now=True)
     journals = models.ManyToManyField('JournalEntry')
     LENGTH_CHOICES = [
         ('1m', '1 Month'),
@@ -71,7 +72,6 @@ class JournalEntry(models.Model):
     def __str__(self):
         if self.title is None:
             return f"{self.user.username}'s Journal Entry for {self.date}"
-        else: 
-            return f"[{self.date}] - {self.title}"
+        return f"[{self.date}] - {self.title}"
     class Meta:
         verbose_name_plural = "Journal Entries"

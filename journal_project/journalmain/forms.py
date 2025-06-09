@@ -1,6 +1,5 @@
-#from django.forms import ModelForm, TextField, ModelMultipleChoiceField, SelectMultiple
 from django import forms
-from django.contrib.auth.models import User
+
 from .models import JournalEntry
 
 
@@ -21,7 +20,4 @@ class AskJournalForm(forms.Form):
     journals = forms.ModelMultipleChoiceField(queryset=JournalEntry.objects.all(), widget=forms.SelectMultiple(attrs={"size": "40"}))
 
     class Meta:
-        fields = ['user', 'question', 'journals'] 
-
-    
-
+        fields = ['user', 'question', 'journals']
