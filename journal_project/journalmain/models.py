@@ -17,7 +17,7 @@ class Goal(models.Model):
     goal_text = models.CharField(max_length=1024, blank=False, null=False)
     goal_rationale = models.CharField(max_length=1024, blank=False, null=False)
     goalCreated = models.DateTimeField(auto_now=True)
-    journals = models.ManyToManyField('JournalEntry')
+    journals = models.ManyToManyField('JournalEntry', blank=True, null=True)
     LENGTH_CHOICES = [
         ('1m', '1 Month'),
         ('6m', '6 Months'),
@@ -29,7 +29,7 @@ class Goal(models.Model):
         choices=LENGTH_CHOICES,
         default='1m',  # Set a default value if needed
     )
-    parent_goal = models.ForeignKey("self", on_delete=models.CASCADE)
+    parent_goal = models.ForeignKey("self", on_delete=models.SET_NULL, blank=True, null=True)
 
 class Report(models.Model):
     # The user field exists so we know who "owns" the report, and
