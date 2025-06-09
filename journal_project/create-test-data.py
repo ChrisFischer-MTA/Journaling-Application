@@ -23,6 +23,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "journal_project.settings")
 
 # Set up the django enviroment for us to interact with
 from django.core.wsgi import get_wsgi_application  # noqa: E402
+
 get_wsgi_application()
 
 # Now, we import models
@@ -30,8 +31,8 @@ from django.contrib.auth.models import User  # noqa: E402
 from journalmain.models import JournalEntry  # noqa: E402
 
 user_obj = User.objects.create_superuser("joe", "lennon@thebeatles.com", "testuser")
-JournalEntry.objects.create(user=user_obj, content=j1,date=d1, created_at=d1).save()
-JournalEntry.objects.create(user=user_obj, content=j2,date=d2, created_at=d2).save()
-JournalEntry.objects.create(user=user_obj, content=j3,date=d3, created_at=d3).save()
-JournalEntry.objects.create(user=user_obj, content=j4,date=d4, created_at=d4).save()
-JournalEntry.objects.create(user=user_obj, content=j5,date=d5, created_at=d5).save()
+JournalEntry.objects.create(user=user_obj, content=j1, date=d1, created_at=d1).save()
+JournalEntry.objects.create(user=user_obj, content=j2, date=d2, created_at=d2).save()
+JournalEntry.objects.create(user=user_obj, content=j3, date=d3, created_at=d3).save()
+JournalEntry.objects.create(user=user_obj, content=j4, date=d4, created_at=d4).save()
+JournalEntry.objects.create(user=user_obj, content=j5, date=d5, created_at=d5).save()

@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class JournalmainConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'journalmain'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "journalmain"
