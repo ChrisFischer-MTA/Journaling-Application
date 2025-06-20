@@ -3,6 +3,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import JournalEntry, Blurb, Report, Goal
 import json
 from .forms import JournalForm, AskJournalForm, GoalForm
+from datetime import datetime, timedelta
+from django.utils import timezone
 import requests
 # Create your views here.
 
@@ -140,6 +142,7 @@ def goal_create(request):
             # process the data in form.cleaned_data as required
             print(form.cleaned_data)
             new = Goal()
+            new.goalCreated = timezone.now()
             new.user = request.user # This WILL error when not logged in, but, that's fine 
             # {'goal_title': 'Test', 'goal_text': 'test', 'goal_rationale': 'test', 'length': '1m', 'parent_goal': None}
             new.goal_title = form.cleaned_data['goal_title']
@@ -160,5 +163,28 @@ def goal_create(request):
 #    path('goals/<int:id>/', views.goals_detail, name='goals_detail'),  
 def goal_detail(request, id):
     goal_entry = get_object_or_404(Goal, id=id, user=request.user)
-    return render(request, 'goal_detail.html', {'goal' : goal_entry})
+    today = timezone.now()
+    expiration_date = goal_entry.goalCreated
+
+    # Terrible way to do this, but, we'll decompose the options to a list eventually
+    # XXX: Define this as a list with constants that are pulled out of the models file
+    if goal_entry.length == '1m':
+        expiration_date += timedelta(days=30)
+    elif goal_entry.length == '6m':
+        expiration_date += timedelta(days=180)
+    elif goal_entry.length == '1y':
+        expiration_date += timedelta(days=365)
+    elif goal_entry.length == '5y':
+        expiration_date += timedelta(days=1825)
+
+    if today > expiration_date:
+        expired = True
+        remaining_time = None
+        expiration_date_str = expiration_date.strftime('%Y-%m-%d')
+    else:
+        expired = False
+        remaining_time = (expiration_date - today).days
+        expiration_date_str = expiration_date.strftime('%Y-%m-%d')
+
+    return render(request, 'goal_detail.html', {'goal' : goal_entry, 'expired': expired, 'remaining_time': remaining_time, 'expiration_date_str': expiration_date_str,})
 

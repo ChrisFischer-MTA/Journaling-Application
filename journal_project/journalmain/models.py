@@ -16,7 +16,7 @@ class Goal(models.Model):
     goal_title = models.CharField(max_length=256, blank=False, null=False)
     goal_text = models.CharField(max_length=1024, blank=False, null=False)
     goal_rationale = models.CharField(max_length=1024, blank=False, null=False)
-    goalCreated = models.DateTimeField(auto_now=True)
+    goalCreated = models.DateTimeField(blank=False, null=False)
     journals = models.ManyToManyField('JournalEntry', blank=True)
     LENGTH_CHOICES = [
         ('1m', '1 Month'),
