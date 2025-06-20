@@ -10,6 +10,15 @@
     <div class="container mt-5">
         <h1 class="mb-4">{{ goal.goal_title }}</h1>
         <p class="text-muted">Created at: {{ goal.goalCreated }}</p>
+        {% if expired %}
+            <div class="alert alert-danger" role="alert">
+                Goal has expired on {{ expiration_date_str }}.
+            </div>
+        {% else %}
+            <div class="alert alert-success" role="alert">
+                Goal will expire on {{ expiration_date_str }}. {{ remaining_time }} days remaining.
+            </div>
+        {% endif %}
         <hr>
 
         <h4>Goal Description</h4>
@@ -26,16 +35,6 @@
             <p>{{ goal.parent_goal.goal_title }}</p>
         {% else %}
             <p>No parent goal</p>
-        {% endif %}
-
-        {% if expired %}
-            <div class="alert alert-danger" role="alert">
-                Goal has expired on {{ expiration_date_str }}.
-            </div>
-        {% else %}
-            <div class="alert alert-success" role="alert">
-                Goal will expire on {{ expiration_date_str }}. {{ remaining_time }} days remaining.
-            </div>
         {% endif %}
 
         <hr>
