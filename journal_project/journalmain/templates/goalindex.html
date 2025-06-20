@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Goals</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Goals</h1>
+
+        <a href="{% url 'goal_create' %}" class="btn btn-primary">Create New Goal!</a>
+        <a href="{% url 'journals' %}" class="btn btn-secondary">Back to Journal Index</a>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Goal Title</th>
+                    <th>Goal Text</th>
+                    <th>Goal Rationale</th>
+                    <th>Length</th>
+                    <th>Created At</th>
+                    <th>Parent Goal</th>
+                    <th>Journals</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for goal in goal_entries %}
+                <tr>
+                    <td>{{ goal.user.username }}</td>
+                    <td>{{ goal.goal_title }}</td>
+                    <td>{{ goal.goal_text }}</td>
+                    <td>{{ goal.goal_rationale }}</td>
+                    <td>{{ goal.length }}</td>
+                    <td>{{ goal.goalCreated }}</td>
+                    <td>
+                        {% if goal.parent_goal %}
+                            {{ goal.parent_goal.goal_title }}
+                        {% else %}
+                            None
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if goal.journals.all %}
+                            <a href="{% url 'goal_journals' goal.id %}" class="btn btn-primary">View Journals</a>
+                        {% else %}
+                            No journals
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'goal_detail' goal.id %}" class="btn btn-primary">View</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="9" class="text-center">No goals found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

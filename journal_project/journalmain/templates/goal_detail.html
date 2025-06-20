@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goal Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">{{ goal.goal_title }}</h1>
+        <p class="text-muted">Created at: {{ goal.goalCreated }}</p>
+        <hr>
+
+        <h4>Goal Description</h4>
+        <p>{{ goal.goal_text | linebreaks }}</p>
+
+        <h4>Goal Rationale</h4>
+        <p>{{ goal.goal_rationale | linebreaks }}</p>
+
+        <h4>Length</h4>
+        <p>{{ goal.length }}</p>
+
+        <h4>Parent Goal</h4>
+        {% if goal.parent_goal %}
+            <p>{{ goal.parent_goal.goal_title }}</p>
+        {% else %}
+            <p>No parent goal</p>
+        {% endif %}
+
+        <h4>Expiration Date</h4>
+        {% now "Y-m-d" as today %}
+        {% if goal.length == '1m' %}
+            {% with goal.goalCreated|date:"Y-m-d" as start_date %}
+                {% with start_date|add:"30 days" as expiration_date %}
+                    {% if today > expiration_date %}
+                        <div class="alert alert-danger" role="alert">
+                            Goal has expired on {{ expiration_date }}.
+                        </div>
+                    {% else %}
+                        {% with expiration_date|date:"Y-m-d" as expiration_date_str %}
+                            {% with today|date:"Y-m-d" as today_str %}
+                                {% with expiration_date_str|split:"-" as expiration_date_parts %}
+                                    {% with today_str|split:"-" as today_parts %}
+                                        {% with expiration_date_parts.0|sub:today_parts.0 as years_diff %}
+                                            {% with expiration_date_parts.1|sub:today_parts.1 as months_diff %}
+                                                {% with expiration_date_parts.2|sub:today_parts.2 as days_diff %}
+                                                    {% if years_diff > 0 %}
+                                                        {{ years_diff }} years, {{ months_diff }} months, {{ days_diff }} days remaining
+                                                    {% elif months_diff > 0 %}
+                                                        {{ months_diff }} months, {{ days_diff }} days remaining
+                                                    {% else %}
+                                                        {{ days_diff }} days remaining
+                                                    {% endif %}
+                                                    until {{ expiration_date }}.
+                                                {% endwith %}
+                                            {% endwith %}
+                                        {% endwith %}
+                                    {% endwith %}
+                                {% endwith %}
+                            {% endwith %}
+                        {% endwith %}
+                        <div class="alert alert-success" role="alert">
+                            Goal will expire on {{ expiration_date }}. {{ days_diff }} days remaining.
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            {% endwith %}
+        {% elif goal.length == '6m' %}
+            {% with goal.goalCreated|date:"Y-m-d" as start_date %}
+                {% with start_date|add:"180 days" as expiration_date %}
+                    {% if today > expiration_date %}
+                        <div class="alert alert-danger" role="alert">
+                            Goal has expired on {{ expiration_date }}.
+                        </div>
+                    {% else %}
+                        {% with expiration_date|date:"Y-m-d" as expiration_date_str %}
+                            {% with today|date:"Y-m-d" as today_str %}
+                                {% with expiration_date_str|split:"-" as expiration_date_parts %}
+                                    {% with today_str|split:"-" as today_parts %}
+                                        {% with expiration_date_parts.0|sub:today_parts.0 as years_diff %}
+                                            {% with expiration_date_parts.1|sub:today_parts.1 as months_diff %}
+                                                {% with expiration_date_parts.2|sub:today_parts.2 as days_diff %}
+                                                    {% if years_diff > 0 %}
+                                                        {{ years_diff }} years, {{ months_diff }} months, {{ days_diff }} days remaining
+                                                    {% elif months_diff > 0 %}
+                                                        {{ months_diff }} months, {{ days_diff }} days remaining
+                                                    {% else %}
+                                                        {{ days_diff }} days remaining
+                                                    {% endif %}
+                                                    until {{ expiration_date }}.
+                                                {% endwith %}
+                                            {% endwith %}
+                                        {% endwith %}
+                                    {% endwith %}
+                                {% endwith %}
+                            {% endwith %}
+                        {% endwith %}
+                        <div class="alert alert-success" role="alert">
+                            Goal will expire on {{ expiration_date }}. {{ days_diff }} days remaining.
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            {% endwith %}
+        {% elif goal.length == '1y' %}
+            {% with goal.goalCreated|date:"Y-m-d" as start_date %}
+                {% with start_date|add:"365 days" as expiration_date %}
+                    {% if today > expiration_date %}
+                        <div class="alert alert-danger" role="alert">
+                            Goal has expired on {{ expiration_date }}.
+                        </div>
+                    {% else %}
+                        {% with expiration_date|date:"Y-m-d" as expiration_date_str %}
+                            {% with today|date:"Y-m-d" as today_str %}
+                                {% with expiration_date_str|split:"-" as expiration_date_parts %}
+                                    {% with today_str|split:"-" as today_parts %}
+                                        {% with expiration_date_parts.0|sub:today_parts.0 as years_diff %}
+                                            {% with expiration_date_parts.1|sub:today_parts.1 as months_diff %}
+                                                {% with expiration_date_parts.2|sub:today_parts.2 as days_diff %}
+                                                    {% if years_diff > 0 %}
+                                                        {{ years_diff }} years, {{ months_diff }} months, {{ days_diff }} days remaining
+                                                    {% elif months_diff > 0 %}
+                                                        {{ months_diff }} months, {{ days_diff }} days remaining
+                                                    {% else %}
+                                                        {{ days_diff }} days remaining
+                                                    {% endif %}
+                                                    until {{ expiration_date }}.
+                                                {% endwith %}
+                                            {% endwith %}
+                                        {% endwith %}
+                                    {% endwith %}
+                                {% endwith %}
+                            {% endwith %}
+                        {% endwith %}
+                        <div class="alert alert-success" role="alert">
+                            Goal will expire on {{ expiration_date }}. {{ days_diff }} days remaining.
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            {% endwith %}
+        {% elif goal.length == '5y' %}
+            {% with goal.goalCreated|date:"Y-m-d" as start_date %}
+                {% with start_date|add:"1825 days" as expiration_date %}
+                    {% if today > expiration_date %}
+                        <div class="alert alert-danger" role="alert">
+                            Goal has expired on {{ expiration_date }}.
+                        </div>
+                    {% else %}
+                        {% with expiration_date|date:"Y-m-d" as expiration_date_str %}
+                            {% with today|date:"Y-m-d" as today_str %}
+                                {% with expiration_date_str|split:"-" as expiration_date_parts %}
+                                    {% with today_str|split:"-" as today_parts %}
+                                        {% with expiration_date_parts.0|sub:today_parts.0 as years_diff %}
+                                            {% with expiration_date_parts.1|sub:today_parts.1 as months_diff %}
+                                                {% with expiration_date_parts.2|sub:today_parts.2 as days_diff %}
+                                                    {% if years_diff > 0 %}
+                                                        {{ years_diff }} years, {{ months_diff }} months, {{ days_diff }} days remaining
+                                                    {% elif months_diff > 0 %}
+                                                        {{ months_diff }} months, {{ days_diff }} days remaining
+                                                    {% else %}
+                                                        {{ days_diff }} days remaining
+                                                    {% endif %}
+                                                    until {{ expiration_date }}.
+                                                {% endwith %}
+                                            {% endwith %}
+                                        {% endwith %}
+                                    {% endwith %}
+                                {% endwith %}
+                            {% endwith %}
+                        {% endwith %}
+                        <div class="alert alert-success" role="alert">
+                            Goal will expire on {{ expiration_date }}. {{ days_diff }} days remaining.
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            {% endwith %}
+        {% endif %}
+
+        <hr>
+        <a href="{% url 'goals' %}" class="btn btn-primary mt-3">Back to Goals</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

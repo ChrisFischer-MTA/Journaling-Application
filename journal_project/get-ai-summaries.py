@@ -6,16 +6,19 @@ mood_prompt = """You're an AI who is unbiased and is tasked with analyzing a jou
 title_prompt = """You're an AI who is unbiased and is tasked with analyzing a journal/diary entry below. You've been given the following task: Generate a short (important! less then 100 characters) title that describes a main topic of the journal. The title should be something that reminds the author of what they wrote about if they saw a list of titles. Your output, after thinking, should just be the title with no formatting.\nJournal Entry: \n"""
 summary_prompt="You're an AI who is unbiased and is tasked with analyzing a week's worth of journal/diary entry below. You've been given the goal of creating a high level summary of trends in this week's journals. Your analysis should include information such as the common topics that were covered across journals and sentiment analysis about those topics. If the author of the journals seemed unhappy about something and it ended up working out, put a brief positive note about that. After the conclusion of all of that analysis, you're to provide recommendations on future lines of effort the author can do (important! only output recommendations if they're not immediately obvious and are relevant. It is better to have no such recommendations then generic or unhelpful ones). "
 
+NUM_CTX = 8192
+model = 'deepseek-r1:8b' # 'deepseek-r1:14b'
+
 def process_entry(entry, tries):
     if tries > 5:
         print("Five tries exceeded!")
         return
-    response = requests.post('http://ollama-intel-gpu:11434/api/generate', json={'model':'deepseek-r1:14b','stream':False,'prompt':mood_prompt+f'```\n{entry.content}\n```'})
+    response = requests.post('http://ollama-intel-gpu:11434/api/generate', json={'model':model,'stream':False,'options':{'num_ctx':NUM_CTX, 'num_batch':1},'prompt':mood_prompt+f'```\n{entry.content}\n```'})
     if "python3" not in str(response.json()):
         return process_entry(entry, tries+1)
     moods = response.json()['response'].split('```')[1].replace('python3','').replace('\n','')
     entry.mood = moods
-    response = requests.post('http://ollama-intel-gpu:11434/api/generate', json={'model':'deepseek-r1:14b','stream':False,'prompt':title_prompt+f'```\n{entry.content}\n```'})
+    response = requests.post('http://ollama-intel-gpu:11434/api/generate', json={'model':model,'stream':False,'options':{'num_ctx':NUM_CTX, 'num_batch':1},'prompt':title_prompt+f'```\n{entry.content}\n```'})
     entry.title = response.json()['response'].split('</think>')[1].strip().replace('*', '').replace('"','').replace('Title:', '').replace('Title','').strip()
     entry.save()
 
@@ -53,7 +56,7 @@ for key in to_process:
     for i in range(len(journals)):
         last_journal_date = journals[i].date.isocalendar()[0:2]
         blob += f"\nJournal {i}:\n```\n{journals[i].content}\n```"
-    response = requests.post('http://ollama-intel-gpu:11434/api/generate', json={'model':'deepseek-r1:14b','stream':False,'prompt':summary_prompt+f'```\n{blob}\n```'})
+    response = requests.post('http://ollama-intel-gpu:11434/api/generate', json={'model':model,'stream':False,'options':{'num_ctx':NUM_CTX, 'num_batch':1},'prompt':summary_prompt+f'```\n{blob}\n```'})
     report_obj = Report(user=journals[0].user, type='w', title=f'Week {str(last_journal_date)} Journal Report', content=response.json()['response'].split('</think>')[1].strip())
     report_obj.save()
     for entry in journals:

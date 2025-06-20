@@ -65,13 +65,13 @@ class JournalEntry(models.Model):
     gratitude = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
-    week_report = models.ForeignKey(Report, on_delete=models.CASCADE, related_name='week_report', blank=True, null=True)
-    month_report = models.ForeignKey(Report, on_delete=models.CASCADE, related_name='month_report', blank=True, null=True)
+    week_report = models.ForeignKey(Report, on_delete=models.SET_NULL, related_name='week_report', blank=True, null=True)
+    month_report = models.ForeignKey(Report, on_delete=models.SET_NULL, related_name='month_report', blank=True, null=True)
 
     def __str__(self):
         if self.title is None:
             return f"{self.user.username}'s Journal Entry for {self.date}"
-        else: 
+        else:
             return f"[{self.date}] - {self.title}"
     class Meta:
         verbose_name_plural = "Journal Entries"

@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import JournalEntry, Blurb, Report
+from .models import JournalEntry, Blurb, Report, Goal
 import json
-from .forms import JournalForm, AskJournalForm
+from .forms import JournalForm, AskJournalForm, GoalForm
 import requests
 # Create your views here.
 
@@ -55,7 +55,7 @@ def mood_list_creation(entry: JournalEntry):
     return return_list
 
 def journals(request):
-    journal_entries = JournalEntry.objects.filter(user=request.user).order_by('-created_at')
+    journal_entries = JournalEntry.objects.filter(user=request.user).order_by('-date')
     return render(request, 'journalindex.html', {'journal_entries': journal_entries}) #HttpResponse("Hello world!")
 
 def journal_question(request):
@@ -71,7 +71,7 @@ def journal_question(request):
             for journal in form.cleaned_data['journals']:
                 journal_preamble+=f"Journal Entry:\nDate: {journal.date}\nContent:\n```{journal.content}```"
             print(prompt+question+journal_preamble)
-            response = requests.post('http://ollama-intel-gpu:11434/api/generate', json={'model':'deepseek-r1:14b','stream':False,'prompt':prompt+question+journal_preamble})
+            response = requests.post('http://ollama-intel-gpu:11434/api/generate', json={'model':'deepseek-r1:14b','stream':False,'options':{'num_ctx':4096},'prompt':prompt+question+journal_preamble})
             return render(request, 'report_detail.html', {'report_entry' : Report(user=request.user, title='Temporary Question', type='w', content=response.json()['response'].split('</think>')[1].strip()) })
         # This isn't nice, but, I see no better option. TODO to add some more verbose error reporting.
         return HttpResponseRedirect("/journals/")    
@@ -118,3 +118,47 @@ def journal_create(request):
 def report_detail(request, id):
     report_entry = get_object_or_404(Report, id=id, user=request.user)
     return render(request, 'report_detail.html', {'report_entry' : report_entry})
+
+#     path('goals/', views.goals, name='goals'),
+def goals(request):
+    # TODO: Find a better order-by
+    goal_entries = Goal.objects.filter(user=request.user) #.order_by('-created_at')
+    print(goal_entries)
+    return render(request, 'goalindex.html', {'goal_entries': goal_entries})
+
+
+#    path('goals/create.html', views.goals_create, name='goals_create'),
+def goal_create(request):
+    goal_entries = Goal.objects.filter(user=request.user) #.order_by('-created_at')
+    if request.method == "POST":
+        # create a form instance and populate it with data from the request:
+        form = GoalForm(request.POST)
+        print(form.is_valid())
+        print(form.errors)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            print(form.cleaned_data)
+            new = Goal()
+            new.user = request.user # This WILL error when not logged in, but, that's fine 
+            # {'goal_title': 'Test', 'goal_text': 'test', 'goal_rationale': 'test', 'length': '1m', 'parent_goal': None}
+            new.goal_title = form.cleaned_data['goal_title']
+            new.goal_text = form.cleaned_data['goal_text']
+            new.goal_rationale = form.cleaned_data['goal_rationale']
+            new.length = form.cleaned_data['length']
+            if form.cleaned_data['parent_goal']:
+                new.parent_goal = form.cleaned_data['parent_goal']
+            # redirect to a new URL:
+            new.save()
+            return HttpResponseRedirect("/goals/")    
+        return render(request, 'goal_submit.html', {'form':form})
+    else:
+        form = GoalForm()
+        return render(request, 'goal_submit.html', {'form':form, 'goals' : goal_entries})
+
+
+#    path('goals/<int:id>/', views.goals_detail, name='goals_detail'),  
+def goal_detail(request, id):
+    goal_entry = get_object_or_404(Goal, id=id, user=request.user)
+    return render(request, 'goal_detail.html', {'goal' : goal_entry})
+
