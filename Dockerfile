@@ -1,4 +1,4 @@
-LABEL org.opencontainers.image.description Application for web based journaling w/ AI Integration
+LABEL unstable
 # Use the official Python runtime image
 FROM python:3.13-slim
  
