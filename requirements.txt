@@ -1,3 +1,4 @@
 django
 requests
 django-markdownify
+git+https://github.com/Peter-Slump/django-keycloak.git
