@@ -1,4 +1,3 @@
-LABEL unstable
 # Use the official Python runtime image
 FROM python:3.13-slim
  
