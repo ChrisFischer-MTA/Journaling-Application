@@ -73,7 +73,7 @@ def journal_question(request):
             for journal in form.cleaned_data['journals']:
                 journal_preamble+=f"Journal Entry:\nDate: {journal.date}\nContent:\n```{journal.content}```"
             print(prompt+question+journal_preamble)
-            response = requests.post('http://ollama-api-intel-gpu-container-1:11434/api/generate', json={'model':'deepseek-r1:14b','stream':False,'options':{'num_ctx':4096},'prompt':prompt+question+journal_preamble})
+            response = requests.post('http://homelab-ollama-api-intel-gpu-container-1:11434/api/generate', json={'model':'deepseek-r1:14b','stream':False,'options':{'num_ctx':4096},'prompt':prompt+question+journal_preamble})
             return render(request, 'report_detail.html', {'report_entry' : Report(user=request.user, title='Temporary Question', type='w', content=response.json()['response'].split('</think>')[1].strip()) })
         # This isn't nice, but, I see no better option. TODO to add some more verbose error reporting.
         return HttpResponseRedirect("/journals/")    

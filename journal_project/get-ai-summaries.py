@@ -13,12 +13,12 @@ def process_entry(entry, tries):
     if tries > 5:
         print("Five tries exceeded!")
         return
-    response = requests.post('http://ollama-intel-gpu:11434/api/generate', json={'model':model,'stream':False,'options':{'num_ctx':NUM_CTX, 'num_batch':1},'prompt':mood_prompt+f'```\n{entry.content}\n```'})
+    response = requests.post('http://homelab-ollama-api-intel-gpu-container-1:11434/api/generate', json={'model':model,'stream':False,'options':{'num_ctx':NUM_CTX, 'num_batch':1},'prompt':mood_prompt+f'```\n{entry.content}\n```'})
     if "python3" not in str(response.json()):
         return process_entry(entry, tries+1)
     moods = response.json()['response'].split('```')[1].replace('python3','').replace('\n','')
     entry.mood = moods
-    response = requests.post('http://ollama-intel-gpu:11434/api/generate', json={'model':model,'stream':False,'options':{'num_ctx':NUM_CTX, 'num_batch':1},'prompt':title_prompt+f'```\n{entry.content}\n```'})
+    response = requests.post('http://homelab-ollama-api-intel-gpu-container-1:11434/api/generate', json={'model':model,'stream':False,'options':{'num_ctx':NUM_CTX, 'num_batch':1},'prompt':title_prompt+f'```\n{entry.content}\n```'})
     entry.title = response.json()['response'].split('</think>')[1].strip().replace('*', '').replace('"','').replace('Title:', '').replace('Title','').strip()
     entry.save()
 
@@ -56,7 +56,7 @@ for key in to_process:
     for i in range(len(journals)):
         last_journal_date = journals[i].date.isocalendar()[0:2]
         blob += f"\nJournal {i}:\n```\n{journals[i].content}\n```"
-    response = requests.post('http://ollama-intel-gpu:11434/api/generate', json={'model':model,'stream':False,'options':{'num_ctx':NUM_CTX, 'num_batch':1},'prompt':summary_prompt+f'```\n{blob}\n```'})
+    response = requests.post('http://homelab-ollama-api-intel-gpu-container-1:11434/api/generate', json={'model':model,'stream':False,'options':{'num_ctx':NUM_CTX, 'num_batch':1},'prompt':summary_prompt+f'```\n{blob}\n```'})
     report_obj = Report(user=journals[0].user, type='w', title=f'Week {str(last_journal_date)} Journal Report', content=response.json()['response'].split('</think>')[1].strip())
     report_obj.save()
     for entry in journals:
