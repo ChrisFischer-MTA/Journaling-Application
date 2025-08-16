@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class Blurb(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     journalEntry = models.ForeignKey('JournalEntry', on_delete=models.CASCADE, null=True, blank=True)
-    blurb_text = models.CharField(max_length=256)
+    blurb_text = models.CharField(max_length=1024)
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
 
