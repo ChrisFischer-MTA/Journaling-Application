@@ -43,11 +43,11 @@ _Note: The Title and Mood tags are completely AI generated_
 ## Installation and Usage Instructions
 ### Getting the Ollama API running
 #### If you have an Intel GPU
-The docker compose incorporates an ollama-intel docker container. If you are using an Intel GPU, it should pretty much work out of the box.
+Check out my homelab project. Just copy the docker compose. You'll need the ollama-api, journal, and postgres containers.
 
 #### If you have a Nvidia GPU
 NVIDIA users have it the easiest, I recommend checking out [this article](https://gist.github.com/usrbinkat/de44facc683f954bf0cca6c87e2f9f88) as it should give you some helpful information on how to set up the compose.
-The broad strokes: You'll need to get an ollama API endpoint listening with the container name ollama-api on the port xxxxx. From there, the application during initialization should do all of the heavy lifting for you. By default, it'll grab Deepseek's r1-14b.
+The broad strokes: You'll need to get an ollama API endpoint listening. From there, the application during initialization should do all of the heavy lifting for you. By default, it'll grab Deepseek's r1-14b.
 
 ### Setting your .env file
 The docker compose references an env file. In the repository, the one that's included has all the ENV values you need, however, you'll need to set them yourself. The following values are required:
@@ -56,6 +56,7 @@ The docker compose references an env file. In the repository, the one that's inc
 * `WEBAPP_USERNAME`: The value of the username you intend to use for your journaling. The blurb integration will attach your blurbs to this user.
 
 ### Provisioning the database
+(This is old and out of date - I am now using postgres)
 The database, by default, is created when the docker container is built and stored in the docker container. The database is initially populated with the username `joe` and password `testuser`. If you get an error similar to "Are you trying to mount a file on a folder or vice versa?" from docker, run the following commands:
 ```bash
 docker compose down
@@ -67,3 +68,9 @@ docker compose down
 mv ./.data/db.sqlite3_init ./.data/db.sqlite3
 ```
 You should then be able to run the webapp, no problem. Note that the AI integration may not work for a little while - it'll automatically queue the downloading of the deepseek model after the first journal is written.
+
+---
+
+signal-cli --config /home/.local/share/signal-cli -a <number-sending-from> trust -a <number-sending-to>
+signal-cli --config /home/.local/share/signal-cli -a <number-sending-from> send <number-to-trust> -m "test"
+
