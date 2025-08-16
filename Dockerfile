@@ -24,7 +24,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Journal App requires cron support. Instlal cron and create cron script.
 RUN apt-get update
-RUN apt-get install cron curl libpq-dev postgresql-server-dev-all -y 
+RUN apt-get install cron curl -y 
 RUN echo "*/5 * * * * root /usr/local/bin/python /app/get-blurbs.py\n" > /etc/cron.d/django-support-scripts
 RUN echo "25 * * * * root /usr/bin/flock -w 10 /tmp/ai-lockfile timeout -s SIGKILL 45m /usr/local/bin/python /app/get-ai-summaries.py" >> /etc/cron.d/django-support-scripts
 RUN echo '\n' >> /etc/cron.d/django-support-scripts

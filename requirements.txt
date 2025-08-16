@@ -1,4 +1,4 @@
 django
 requests
 django-markdownify
-psycopg2
+psycopg2-binary
