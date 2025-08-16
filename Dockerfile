@@ -37,10 +37,11 @@ COPY ./journal_project/ /app/
 EXPOSE 8000
 
 # Create our initial database
-RUN python manage.py makemigrations
-RUN python manage.py migrate
-RUN python create-test-data.py
-RUN cp db.sqlite3 db.sqlite3_initial
+# Note: Removed this since the postgres migration
+# RUN python manage.py makemigrations
+# RUN python manage.py migrate
+# RUN python create-test-data.py
+# RUN cp db.sqlite3 db.sqlite3_initial
 
 # We can't use a simple command entry point, because cron can't inference env variables
 # My workaround for this is create a script, save a env file to root, then reference the variables
